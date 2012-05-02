@@ -2,19 +2,22 @@
 <% mymonth=(params[:name].chomp).to_i %>
 <% first_day=Date.new(this_year,mymonth,1) %>
 <% last_day=Date.new(this_year,mymonth,-1) %>
-<%= "-------#{mymonth}月-------" %>
-<br>
 <table border=2>
+<caption><%= "[#{mymonth}月]" %></caption>
+<tr bgcolor=#cccccc>
+<% (first_day..first_day+6).each do |dayName| %>
+<th><%= dayName.strftime('%a') %></th>
+<% end %>
+</tr>
 <tr>
 <%(first_day..last_day).each do |day|%>
 <%if (day.day%7) == 0 then%>
-<td><%= day.day %></td>
+<td><%=day.day%></td>
 </tr>
 <%elsif (day.day%7) == 1 then%>
-<td><%= day.day %></td>
+<td><%=day.day%></td>
 <%else %>
-<td><%= day.day %></td>
+<td><%=day.day%></td>
 <% end %>
 <% end %>
-</td>
 </table>
