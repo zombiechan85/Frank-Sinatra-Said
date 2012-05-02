@@ -1,11 +1,12 @@
 <% this_year=2012 %>
+<% week_offset=6 %>
 <% mymonth=(params[:name].chomp).to_i %>
 <% first_day=Date.new(this_year,mymonth,1) %>
 <% last_day=Date.new(this_year,mymonth,-1) %>
-<table border=2>
+<table border=5>
 <caption><%= "[#{mymonth}月]" %></caption>
 <tr bgcolor=#cccccc>
-<% (first_day..first_day+6).each do |dayName| %>
+<% (first_day..first_day+week_offset).each do |dayName| %>
 <th><%= dayName.strftime('%a') %></th>
 <% end %>
 </tr>
