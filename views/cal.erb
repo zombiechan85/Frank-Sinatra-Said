@@ -1,6 +1,6 @@
 <% this_year=2012 %>
 <% week_offset=6 %>
-<% mymonth=(params[:name].chomp).to_i %>
+<% mymonth=params[:selectMonth].to_i %>
 <% first_day=Date.new(this_year,mymonth,1) %>
 <% last_day=Date.new(this_year,mymonth,-1) %>
 <table border=5>
@@ -22,3 +22,4 @@
 <% end %>
 <% end %>
 </table>
+<a href="/">戻る</a>

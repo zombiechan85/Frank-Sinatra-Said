@@ -12,18 +12,24 @@ template :layout do
   "<html><body><h1>Hello World</h1><%= yield %></body></html>"
 end
 
-
 get '/' do
   erb %{
     <p>2012年の何月のカレンダーを見る？</p>
-    <form action='/result' method='POST'>
-    <input type='text' name='name'>
-    <br>
-    <input type='submit' value='送信'>
+    <form action="/month" method="get">
+    <select name="selectMonth">
+    <% (1..12).each do |month| %>
+    <option value="<%= month %>"><%= month %></option>
+    <% end %>
+    </select>
+    <input type="submit" value="表示">
     </form>
   }
 end
 
-post '/result' do
-erb:cal
+get '/month' do
+   erb:calendar
+end
+
+not_found do 
+  'file not found.'
 end
