@@ -1,48 +1,59 @@
-<% def create_month(calendar=Array.new(7).map!{Array.new},this_year=2012,mymonth) %>
-<% @week_offset=7 %>
-<% @x = 1 %>
-<% @y = 0 %>
-<% (0..6).each do |day| %>
-<% calendar[0][day]=Date.new(2012,5,day.to_i+@week_offset).strftime('%a') %>
-<% end %>
-<% first_day=Date.new(this_year,mymonth,1) %>
-<% last_day=Date.new(this_year,mymonth,-1) %>
-<% (first_day..last_day).each do |day| %>
-<%    if day.day == 1 && day.strftime('%a')=='Mon' then %>
-<%      @y = 0 %>
-<%    elsif day.day == 1 && day.strftime('%a')=='Tue' then %>
-<%      @y = 1 %>
-<%    elsif day.day == 1 && day.strftime('%a')=='Wed' then %>
-<%      @y = 2 %>
-<%    elsif day.day == 1 && day.strftime('%a')=='Thu' then %>
-<%      @y = 3 %>
-<%    elsif day.day == 1 && day.strftime('%a')=='Fri' then %>
-<%      @y = 4 %>
-<%    elsif day.day == 1 && day.strftime('%a')=='Sat' then %>
-<%      @y = 5 %>
-<%    elsif day.day == 1 && day.strftime('%a')=='Sun' then %>
-<%      calendar[@x][6]=day.day %>
-<%      @x=@x+1 %>
-<%      @y=0 %>
-<%    end %>
-<%    if day.day != 1 && day.strftime('%a')=='Sun' then %>
-<%      calendar[@x][6]=day.day %>
-<%      @x=@x+1 %>
-<%      @y=0 %>
-<%    else %>
-<%      calendar[@x][@y]=day.day %>
-<%      @y=@y+1 %>
+<% class Calendar %>
+<%  @@weekOffset = 1 %>
+<%  @@x = 1 %>
+<%  @@y = 0 %>
+<%  @@calArray=Array.new(7).map!{Array.new} %>
+<%  def initialize %>
+<%    (0..6).each do |i| %>
+<%      @@calArray[0][i]=Date.new(2012,4,i+@@weekOffset).strftime("%a") %>
 <%    end %>
 <%  end %>
-<%  return calendar %>
-<% end %><br>
-<% monthArray=create_month(params[:selectMonth].to_i) %>
+<%  def setDate(x,y,date) %>
+<%    @@calArray[x][y]=date %>
+<%    if date == 1 then %>
+<%      @@y = y %>
+<%    end %>
+<%    if y==6 then %>
+<%      @@x = @@x + 1 %>
+<%      @@y = 0 %>
+<%    else %>
+<%      @@y = @@y + 1 %>
+<%    end %>
+<%  end %>
+<%  def createMonth(thisYear,myMonth) %>
+<%    @f_date=Date.new(thisYear,myMonth,1) %>
+<%    @l_date=Date.new(thisYear,myMonth,-1) %>
+<%    (@f_date..@l_date).each do |i| %>
+<%      if i.day == 1 %>
+<%        case i.strftime("%a") %>
+<%        when "Sun" %>
+<%          setDate(1,0,i.day) %>
+<%        when "Mon" %>
+<%          setDate(1,1,i.day) %>
+<%        when "Tue" %>
+<%          setDate(1,2,i.day) %>
+<%        when "Wed" %>
+<%          setDate(1,3,i.day) %>
+<%        when "Thu" %>
+<%          setDate(1,4,i.day) %>
+<%        when "Fri" %>
+<%          setDate(1,5,i.day) %>
+<%        when "Sat" %>
+<%          setDate(1,6,i.day) %>
+<%        end %>
+<%      else %>
+<%        setDate(@@x,@@y,i.day) %>
+<%      end %>
+<%    end %>
+<%    return @@calArray%>
+<%  end%>
+<%end%>
+<% calendarArray = Calendar.new %>
 <% x=0 %>
 <% y=0 %>
-
 <h2><%= "#{params[:selectMonth].to_i}月" %></h2>
 <table border=3>
-<% monthArray.each do |week| %>
+<% calendarArray.createMonth(2012,params[:selectMonth].to_i).each do |week| %>
 <tr>
 <%   week.each do |day| %>
 <%     if day == nil then %>
