@@ -8,9 +8,16 @@ helpers do
   include Rack::Utils; alias_method :h, :escape_html
 end
 
+css = '<link rel=stylesheet type="text/css" href="style-sheet.css">'
+tags= "<html><head>#{css}</head><body><h1>Hello World</h1><%= yield %></body></html>"
+
+set :public_folder, File.dirname(__FILE__) + '/css'
+
 template :layout do
- "<html><body><h1>Hello World</h1><%= yield %></body></html>"
+tags
 end
+
+
 
 get '/' do
   erb %{
