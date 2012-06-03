@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 require 'rubygems'
 require 'sinatra'
-require 'date'
 require 'erb'
+require File.dirname(__FILE__) + "/lib/originCal"
 
 helpers do
   include Rack::Utils; alias_method :h, :escape_html
 end
 
 template :layout do
-  "<html><body><h1>Hello World</h1><%= yield %></body></html>"
+ "<html><body><h1>Hello World</h1><%= yield %></body></html>"
 end
 
 get '/' do
@@ -27,7 +27,8 @@ get '/' do
 end
 
 get '/month' do
-   erb:calendar
+  @my_calendar = Calendar.new
+  erb:calendar
 end
 
 not_found do 

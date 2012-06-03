@@ -1,59 +1,49 @@
-require 'time'
 require 'date'
+require 'time'
 
 class Calendar
-  @@weekOffset = 1
-  @@x = 1
+  @@week_offset = 1
+  @@x = 0
   @@y = 0
-  @@calArray=Array.new(7).map!{Array.new}
+  @@cal_array=Array.new(7).map!{Array.new}
+  @@day_of_date={"Sun" => 0, "Mon" => 1, "Tue" => 2, "Wed" => 3, "Thu" => 4, "Fri" => 5, "Sat" => 6}
   def initialize
-    (0..6).each do |i|
-      @@calArray[0][i]=Date.new(2012,4,i+@@weekOffset).strftime("%a")
+    @@day_of_date.each do |key,value|
+      @@cal_array[@@x][value]=key
     end
+    @@x = @@x + 1
   end
-  
-  def setDate(x,y,date)
-    @@calArray[x][y]=date
-    if date == 1 then
-      @@y = y
+
+  def setDate(x,y,a_day)
+    if a_day.day == 1 then
+      @@cal_array[@@x][@@day_of_date["#{a_day.strftime("%a")}"]]=a_day
+      @@y = @@day_of_date["#{a_day.strftime("%a")}"]
+    else 
+      @@cal_array[@@x][@@y]=a_day
     end
-    if y==6 then
+    if a_day.strftime("%a")=="Sat" then
       @@x = @@x + 1
       @@y = 0
     else
       @@y = @@y + 1
     end
   end
-  
-  def createMonth(thisYear,myMonth)
-    @f_date=Date.new(thisYear,myMonth,1)
-    @l_date=Date.new(thisYear,myMonth,-1)
+    
+  def createMonth(this_year,my_month)
+    @f_date=Date.new(this_year,my_month,1)
+    @l_date=Date.new(this_year,my_month,-1)
     (@f_date..@l_date).each do |i|
-      if i.day == 1
-        case i.strftime("%a")
-        when "Sun"
-          setDate(1,0,i.day)
-        when "Mon"
-          setDate(1,1,i.day)
-        when "Tue"
-          setDate(1,2,i.day)
-        when "Wed"
-          setDate(1,3,i.day)
-        when "Thu"
-          setDate(1,4,i.day)
-        when "Fri"
-          setDate(1,5,i.day)
-        when "Sat"
-          setDate(1,6,i.day)
-        end
-      else
-        setDate(@@x,@@y,i.day)
-      end
+      setDate(@@x, @@y, i)
     end
-    return @@calArray
+    return @@cal_array
   end
 end
 
 hoge = Calendar.new
-huga = hoge.createMonth(2012,ARGV[0].to_i)
-p huga
+p hoge.createMonth(2012,1)
+hoge = Calendar.new
+p hoge.createMonth(2012,2)
+hoge = Calendar.new
+p hoge.createMonth(2012,3)
+hoge = Calendar.new
+p hoge.createMonth(2012,4)
