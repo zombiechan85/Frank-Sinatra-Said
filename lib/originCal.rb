@@ -1,6 +1,5 @@
 require 'date'
 require 'time'
-require 'pp'
 
 class Calendar 
   def initialize
@@ -12,16 +11,14 @@ class Calendar
   
   def setDate(x,y,a_day)
     if a_day.day == 1 then
-      @cal_array[@x][@day_of_date["#{a_day.strftime("%a")}"]]=a_day
-      @y = @day_of_date["#{a_day.strftime("%a")}"] + 1
+      @y = @day_of_date["#{a_day.strftime("%a")}"]
+    end
+      @cal_array[@x][@y] = a_day
+    if a_day.strftime("%a")=="Sat" then
+      @x = @x + 1
+      @y = 0
     else
-      @cal_array[@x][@y]=a_day
-      if a_day.strftime("%a")=="Sat" then
-        @x = @x + 1
-        @y = 0
-      else
-        @y = @y + 1
-      end
+      @y = @y + 1
     end
   end
     
