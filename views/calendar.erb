@@ -1,20 +1,20 @@
 <h2><%= "#{params[:selectMonth].to_i}月" %></h2>
 <table border=3>
 <% my_cal = @my_calendar.createMonth(2012,params[:selectMonth].to_i) %>
+<tr>
+<% @my_calendar.get_week.each_key do |key| %>
+     <td class="<%= key %>"><%= key %></td>
+<% end %>
+</tr>
 <% my_cal.each do |week| %>
 <tr>
 <%   week.each do |day_of_week| %>
-<%p day_of_week %>
 <%     if day_of_week == nil then %>
        	  <td><br></td>
 <%     else %>
-<%	if day_of_week == "Sun" then%>
-	  <td class="<%=day_of_week %>"><%=day_of_week %></td>
-<%      else %>
-         <td><%= day_of_week %></td>
-<%      end %>
-<%     end %>
+       	  <td class="<%=day_of_week.strftime('%a')%>"><%= day_of_week.day %></td>
 <%   end %>
+<% end %>
 </tr>
 <% end %>
 </table>

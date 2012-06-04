@@ -8,24 +8,20 @@ class Calendar
     @y = 0
     @cal_array=Array.new(7).map!{Array.new}
     @day_of_date={"Sun" => 0,"Mon" => 1, "Tue" => 2, "Wed" => 3, "Thu" => 4, "Fri" => 5, "Sat" => 6}
-    @day_of_date.each{|key,val|
-      @cal_array[@x][val]=key
-    }
-    @x = @x + 1
   end
   
   def setDate(x,y,a_day)
     if a_day.day == 1 then
       @cal_array[@x][@day_of_date["#{a_day.strftime("%a")}"]]=a_day
-      @y = @day_of_date["#{a_day.strftime("%a")}"]
-    else 
-      @cal_array[@x][@y]=a_day
-    end
-    if a_day.strftime("%a")=="Sat" then
-      @x = @x + 1
-      @y = 0
+      @y = @day_of_date["#{a_day.strftime("%a")}"] + 1
     else
-      @y = @y + 1
+      @cal_array[@x][@y]=a_day
+      if a_day.strftime("%a")=="Sat" then
+        @x = @x + 1
+        @y = 0
+      else
+        @y = @y + 1
+      end
     end
   end
     
@@ -37,4 +33,9 @@ class Calendar
     end
     return @cal_array
   end
+  
+  def get_week
+    return @day_of_date
+  end
+  
 end
